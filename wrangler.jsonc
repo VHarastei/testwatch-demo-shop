@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "testwatch-demo-shop",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "observability": { "enabled": true, "head_sampling_rate": 0.1 },
+  "vars": {
+    // normal | drift (renamed "Add to cart" button) | bug (cart total drops shipping); combine: "drift,bug"
+    "VARIANT": "normal",
+    // Public source repo, linked from the footer when set.
+    "REPO_URL": "https://github.com/VHarastei/testwatch-demo-shop"
+  }
+  // Secret: SESSION_SECRET (wrangler secret put SESSION_SECRET; locally in .dev.vars)
+}
