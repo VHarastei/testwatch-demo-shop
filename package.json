@@ -8,6 +8,9 @@
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
+    "deploy:all": "wrangler deploy && wrangler deploy --env drift && wrangler deploy --env bug",
+    "dev:drift": "wrangler dev --env drift --port 8788 --persist-to .wrangler/state-drift",
+    "dev:bug": "wrangler dev --env bug --port 8789 --persist-to .wrangler/state-bug",
     "types": "wrangler types --strict-vars=false",
     "typecheck": "tsc --noEmit && tsc --noEmit -p test/tsconfig.json",
     "test": "vitest run"

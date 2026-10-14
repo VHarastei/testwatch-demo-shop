@@ -8,6 +8,23 @@ export interface PageCtx {
   cartCount: number;
   /** Public source repo; the footer links it when set (REPO_URL var). */
   repoUrl?: string;
+  /** The deployment's VARIANT; anything but `normal` is named in the footer. */
+  variant?: string;
+}
+
+const VARIANT_NOTES: Record<string, string> = {
+  drift: 'a button was renamed',
+  bug: 'shipping is left out of the cart total',
+};
+
+/** The footer line naming a non-normal variant (`drift`, `bug`, `drift,bug`), or ''. */
+export function variantNote(variant: string | undefined): string {
+  const parts = (variant ?? '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter((v) => v in VARIANT_NOTES);
+  if (parts.length === 0) return '';
+  return `This copy of the shop is the “${parts.join(', ')}” variant: ${parts.map((v) => VARIANT_NOTES[v]).join('; ')}.`;
 }
 
 const NAV: [string, string][] = [
@@ -65,6 +82,7 @@ ${body}
 <footer class="site"><div class="wrap">
   <span>Fieldmark Supply is a demo shop for end-to-end testing. Nothing is for sale and no real payments are taken.</span>
   <span>${ctx.repoUrl ? html`<a href="${ctx.repoUrl}">Source code (MIT)</a> · ` : ''}Made for <a href="https://testwatch.dev">TestWatch</a></span>
+  ${variantNote(ctx.variant) ? html`<span data-testid="shop-variant">${variantNote(ctx.variant)}</span>` : ''}
 </div></footer>
 ${(opts.scripts ?? []).map((src) => html`<script src="${src}" defer></script>`)}
 </body>

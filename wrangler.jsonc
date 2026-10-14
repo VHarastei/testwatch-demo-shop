@@ -11,6 +11,32 @@
     "VARIANT": "normal",
     // Public source repo, linked from the footer when set.
     "REPO_URL": "https://github.com/VHarastei/testwatch-demo-shop"
-  }
+  },
   // Secret: SESSION_SECRET (wrangler secret put SESSION_SECRET; locally in .dev.vars)
+
+  // Fixed variant deployments — TestWatch's signup demo app points one environment at each
+  // (docs/43). A query-string or cookie switch can't survive page.goto('/') or a fresh browser
+  // context, so each variant is its own Worker on its own host. Vars are not inherited by an
+  // environment, so each repeats them. Each has its OWN SESSION_SECRET:
+  //   pnpm wrangler secret put SESSION_SECRET --env drift
+  //   pnpm wrangler secret put SESSION_SECRET --env bug
+  // Deploy: pnpm run deploy:all (or wrangler deploy --env drift / --env bug).
+  "env": {
+    "drift": {
+      "name": "testwatch-demo-shop-drift",
+      "workers_dev": true,
+      "vars": {
+        "VARIANT": "drift",
+        "REPO_URL": "https://github.com/VHarastei/testwatch-demo-shop"
+      }
+    },
+    "bug": {
+      "name": "testwatch-demo-shop-bug",
+      "workers_dev": true,
+      "vars": {
+        "VARIANT": "bug",
+        "REPO_URL": "https://github.com/VHarastei/testwatch-demo-shop"
+      }
+    }
+  }
 }

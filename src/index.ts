@@ -118,6 +118,7 @@ function view(c: Ctx, title: string, body: Raw, opts: { status?: number; scripts
       user: c.session.user,
       cartCount: cartCount(c.session),
       repoUrl: c.env.REPO_URL || undefined,
+      variant: c.variant,
     },
     body,
     { scripts: opts.scripts },

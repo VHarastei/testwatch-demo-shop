@@ -37,6 +37,13 @@ describe('variants', () => {
     expect(drift).toContain('data-testid="add-to-bag">Add to bag<');
     expect(drift).not.toContain('Add to cart');
   });
+  test('a non-normal variant is named in the footer; normal says nothing', async () => {
+    expect(await text(await browser().get('/'))).not.toContain('data-testid="shop-variant"');
+    const bug = await text(await browser({ VARIANT: 'bug' }).get('/'));
+    expect(bug).toContain('the “bug” variant: shipping is left out of the cart total.');
+    const both = await text(await browser({ VARIANT: 'drift,bug' }).get('/'));
+    expect(both).toContain('the “drift, bug” variant');
+  });
 });
 
 describe('auth', () => {
